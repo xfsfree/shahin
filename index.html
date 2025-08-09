@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Şahin - 卍卍卍卍</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Russo+One&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            background: #444;
+        }
+
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: -1;
+        }
+
+        .video-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAABJJREFUeNrtwQEBAAAAgiD/r25IQAEAAX5tThQAAAAASUVORK5CYII=') repeat;
+            opacity: 0.1;
+            animation: noise 0.2s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes noise {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(1px, 1px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.8s ease, backdrop-filter 0.8s ease;
+            cursor: pointer;
+        }
+
+        .intro-screen.hidden {
+            opacity: 0;
+            backdrop-filter: blur(0px);
+            pointer-events: none;
+        }
+
+        .click-text {
+            font-family: 'Russo One', sans-serif;
+            font-size: 3rem;
+            font-weight: 400;
+            color: #fff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            z-index: 1;
+        }
+
+        .container.visible {
+            opacity: 1;
+        }
+
+        .photo {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+
+        .photo:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop playsinline class="background-video">
+        <source src="resources/background.mp4" type="video/mp4" />
+        Your browser does not support video playback.
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="intro-screen">
+        <h1 class="click-text">Click to Enter</h1>
+    </div>
+
+    <audio id="background-music" src="resources/song.mp3" preload="auto"></audio>
+
+    <div class="container">
+        <img src="resources/shahin.jpg" class="photo" />
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const video = document.querySelector('.background-video');
+            video.play().catch(() => {
+                video.play();
+            });
+        });
+
+        const introScreen = document.querySelector('.intro-screen');
+        const container = document.querySelector('.container');
+        const backgroundMusic = document.getElementById('background-music');
+
+        document.addEventListener('click', () => {
+            introScreen.classList.add('hidden');
+            container.classList.add('visible');
+            backgroundMusic.play().catch(error => {
+                console.log('Music playback error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
